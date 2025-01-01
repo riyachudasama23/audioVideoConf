@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMeeting, Constants } from "@videosdk.live/react-sdk";
 import ParticipantView from "./ParticipantView";
 import Controls from "./Controls";
+import Whiteboard from "./Whiteboard";
 
 export default function Container(props) {
   const [joined, setJoined] = useState(null);
@@ -42,7 +43,8 @@ export default function Container(props) {
             onStartScreenShare={handleStartScreenShare}
             onStopScreenShare={handleStopScreenShare}
           />
-          //For rendering all the participants in the meeting
+          <Whiteboard/>
+          {/* //For rendering all the participants in the meeting */}
           {[...participants.keys()].map((participantId) => (
             <ParticipantView
               participantId={participantId}
