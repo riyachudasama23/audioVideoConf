@@ -5,6 +5,7 @@ import Controls from "./Controls";
 import Whiteboard from "./Whiteboard";
 import ChatView from "./ChatView";
 import Recording from "./Recording";
+import Transcription from "./Transcription";
 
 export default function Container(props) {
   const [joined, setJoined] = useState(null);
@@ -47,6 +48,7 @@ export default function Container(props) {
           />
           <Whiteboard/>
           <Recording/>
+          <Transcription/>
           <ChatView/>
           {/* //For rendering all the participants in the meeting */}
           {[...participants.keys()].map((participantId) => (
