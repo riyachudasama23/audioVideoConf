@@ -1,5 +1,5 @@
 import { usePubSub } from "@videosdk.live/react-sdk";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function ChatView() {
     // destructure publish method from usePubSub hook
@@ -9,7 +9,6 @@ function ChatView() {
     const [message, setMessage] = useState("");
   
     const handleSendMessage = () => {
-      console.log("Sending message:", message);
       // Sending the Message using the publish method
       publish(message, { persist: true });
       // Clearing the message input
