@@ -1,14 +1,18 @@
-import { Constants, useMeeting, useTranscription } from "@videosdk.live/react-sdk";
+import { Constants, useMeeting, useTranscription, useParticipant } from "@videosdk.live/react-sdk";
+import {Filter} from "bad-words";
+import { useState , useEffect} from "react";
 
 const Transcription = () => {
+  const filter = new Filter();
+  const [participantToRemove, setParticipantToRemove] = useState(null);
+  const { participants } = useMeeting();
 
   // Configuration for realtime transcription
   const config = {
-//webhookUrl : "https://www.example.com",
-  summary: {
-    enabled: true,
-    prompt: "Write summary in sections like Title, Agenda, Speakers, Action Items, Outlines, Notes and Summary"
-  }
+    summary: {
+      enabled: true,
+      prompt: "Write summary in sections like Title, Agenda, Speakers, Action Items, Outlines, Notes and Summary"
+    }
   };
 
   // Callback function for transcription state change event
@@ -32,7 +36,12 @@ const Transcription = () => {
   function onTranscriptionText(data) {
     let { participantId, participantName, text, timestamp, type } = data;
     console.log(`${participantName}: ${text} ${timestamp}`);
-  }
+
+    if (filter.isProfane(text)) {
+      console.warn(`Profanity detected! ${participantName} is marked for removal.`);
+      setParticipantToRemove(participantId);
+    }
+  } 
 
   // Passing callback functions to useTranscription hook
   const { startTranscription, stopTranscription } = useTranscription({
@@ -53,7 +62,23 @@ const Transcription = () => {
   return<>
     <button onClick={handleStart}>Start Transcription</button>
     <button onClick={handleStop}>Stop Transcription</button>
+
+    <ParticipantView2 participantId={participantToRemove} onRemoved={() => setParticipantToRemove(null)} />
   </>  
+};
+
+const ParticipantView2 = ({ participantId, onRemoved }) => {
+  const { remove } = useParticipant(participantId);
+
+  useEffect(() => {
+    if (participantId) {
+      console.log(`Removing participant: ${participantId}`);
+      remove(); // Auto-remove the participant
+      onRemoved(); // Reset state after removal
+    }
+  }, [participantId, remove, onRemoved]);
+
+  return null; // No UI needed since removal is automatic
 };
 
 export default Transcription;
