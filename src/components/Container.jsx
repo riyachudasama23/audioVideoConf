@@ -4,7 +4,7 @@ import ParticipantView from "./ParticipantView";
 import Controls from "./Controls";
 import Whiteboard from "./Whiteboard";
 import ChatView from "./ChatView";
-import Recording from "./Recording";
+// import Recording from "./Recording";
 import Transcription from "./Transcription";
 
 export default function Container(props) {
@@ -47,7 +47,7 @@ export default function Container(props) {
             onStopScreenShare={handleStopScreenShare}
           />
           <Whiteboard/>
-          <Recording/>
+          {/* <Recording/> */}
           <Transcription/>
           <ChatView/>
           {/* //For rendering all the participants in the meeting */}
